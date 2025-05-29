@@ -22,7 +22,6 @@ cd       build
              --disable-werror      \
              --enable-new-dtags    \
              --enable-default-hash-style=gnu
-
 make
 make install
 
@@ -63,13 +62,12 @@ cd       build
     --disable-libvtv          \
     --disable-libstdcxx       \
     --enable-languages=c,c++
-
 make
 make install
 
 cd ..
 cat gcc/limitx.h gcc/glimits.h gcc/limity.h > \
-    "$(dirname "$("$LFS_TGT-gcc" -print-libgcc-file-name)")/include/limits.h"
+    `dirname $($LFS_TGT-gcc -print-libgcc-file-name)`/include/limits.h
 
 
 # Linux API Headers
@@ -106,7 +104,6 @@ echo "rootsbindir=/usr/sbin" > configparms
       --disable-nscd            \
       libc_cv_slibdir=/usr/lib  \
       --enable-kernel=6.12
-
 make
 make DESTDIR="${LFS:?}" install # paranoia
 
@@ -122,6 +119,7 @@ grep -B3 "^ $LFS/usr/include" dummy.log
 grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
 grep "/lib.*/libc.so.6 " dummy.log
 grep found dummy.log
+rm -v a.out dummy.log
 
 
 # Libstdc++ from GCC
@@ -138,7 +136,6 @@ cd       build
     --disable-nls           \
     --disable-libstdcxx-pch \
     --with-gxx-include-dir="/tools/$LFS_TGT/include/c++/15.1.0"
-
 make
 make DESTDIR="$LFS" install
 rm -vf "$LFS"/usr/lib/lib{stdc++{,exp,fs},supc++}.la
