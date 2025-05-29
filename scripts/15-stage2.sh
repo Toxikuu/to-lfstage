@@ -27,9 +27,11 @@ make DESTDIR="$LFS" install
 
 
 # Ncurses
+# NOTE: A specific ncurses snapshot is used (ncurses-6.5-20250517) to avoid
+# gcc >= 15 errors
 pre ncurses
 
-mkdir build
+mkdir -v build
 pushd build
     ../configure AWK=gawk
     make -C include
