@@ -27,9 +27,10 @@ chroot "$LFS" /usr/bin/env -i   \
     HOME=/root                  \
     TERM="$TERM"                \
     PS1='(lfs chroot) \u:\w\$ ' \
+    SOURCES=/sources            \
     PATH=/usr/bin:/usr/sbin     \
-    MAKEFLAGS="-j$(nproc)"      \
-    TESTSUITEFLAGS="-j$(nproc)" \
+    MAKEFLAGS="$MAKEFLAGS"      \
+    TESTSUITEFLAGS="$MAKEFLAGS" \
     /as_chroot.sh              ||
 die "Something failed in chroot" 7
 

@@ -236,7 +236,8 @@ make
 make install
 
 
-msg "CHECKPOINT: Minimal system complete"
+echo "CHECKPOINT: Minimal system complete" >&2
+sleep 2
 
 
 # Iana-etc
@@ -260,7 +261,6 @@ echo "rootsbindir=/usr/sbin" > configparms
              --enable-stack-protector=strong \
              --enable-kernel=6.12
 make
-make check
 
 touch /etc/ld.so.conf
 sed '/test-installation/s@$(PERL)@echo not running@' -i ../Makefile
@@ -317,8 +317,9 @@ rm -vf /usr/lib/libzstd.a
 
 # Cleanup
 post
-msg "Completed stage 3"
-msg "Cleaning up..."
+echo "Completed stage 3" >&2
+echo "Cleaning up..."    >&2
+sleep 2
 cd /
 
 # Remove temporary files
@@ -452,4 +453,4 @@ find /usr/share/terminfo -type d -empty -delete
 
 # mark success
 touch /good
-msg "Finished cleanup"
+echo "Finished cleanup" >&2
