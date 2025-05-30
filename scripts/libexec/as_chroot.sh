@@ -463,6 +463,24 @@ mkdir -pv /usr/share/gdb/auto-load/usr/lib
 mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib
 
 
+# Gettext
+pre gettext
+./configure --prefix=/usr       \
+            --disable-static    \
+            --disable-nls       \
+            --disable-rpath     \
+            --disable-acl       \
+            --disable-xattr     \
+            --without-git       \
+            --without-emacs     \
+            --without-bzip2     \
+            --without-selinux   \
+            --with-xz
+make
+make install
+chmod -v 755 /usr/lib/preloadable_libintl.so
+
+
 # Which
 pre which
 ./configure --prefix=/usr --enable-optimize
