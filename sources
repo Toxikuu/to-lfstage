@@ -10,6 +10,7 @@ https://ftpmirror.gnu.org/gnu/coreutils/coreutils-9.7.tar.xz
 https://ftpmirror.gnu.org/gnu/diffutils/diffutils-3.12.tar.xz
 https://astron.com/pub/file/file-5.46.tar.gz
 https://ftpmirror.gnu.org/gnu/findutils/findutils-4.10.0.tar.xz
+https://github.com/westes/flex/releases/download/v2.6.4/flex-2.6.4.tar.gz
 https://ftpmirror.gnu.org/gnu/gawk/gawk-5.3.2.tar.xz
 https://ftpmirror.gnu.org/gnu/gcc/gcc-15.1.0/gcc-15.1.0.tar.xz
 https://ftpmirror.gnu.org/gnu/gettext/gettext-0.25.tar.xz
@@ -17,8 +18,11 @@ https://ftpmirror.gnu.org/gnu/glibc/glibc-2.41.tar.xz
 https://www.linuxfromscratch.org/patches/lfs/development/glibc-2.41-fhs-1.patch
 https://ftpmirror.gnu.org/gnu/gmp/gmp-6.3.0.tar.xz
 https://ftpmirror.gnu.org/gnu/grep/grep-3.12.tar.xz
+https://ftpmirror.gnu.org/gnu/groff/groff-1.23.0.tar.gz
 https://ftpmirror.gnu.org/gnu/gzip/gzip-1.14.tar.xz
 https://github.com/Mic92/iana-etc/releases/download/20250519/iana-etc-20250519.tar.gz
+https://libisl.sourceforge.io/isl-0.27.tar.xz
+https://ftpmirror.gnu.org/gnu/libtool/libtool-2.5.4.tar.xz
 https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.14.9.tar.xz
 https://ftpmirror.gnu.org/gnu/m4/m4-1.4.20.tar.xz
 https://ftpmirror.gnu.org/gnu/make/make-4.4.1.tar.gz
@@ -27,9 +31,12 @@ https://ftpmirror.gnu.org/gnu/mpfr/mpfr-4.2.2.tar.xz
 https://invisible-mirror.net/archives/ncurses/current/ncurses-6.5-20250517.tgz
 https://ftpmirror.gnu.org/gnu/patch/patch-2.8.tar.xz
 https://www.cpan.org/src/5.0/perl-5.40.2.tar.xz
+https://distfiles.ariadne.space/pkgconf/pkgconf-2.4.3.tar.xz
 https://www.python.org/ftp/python/3.13.3/Python-3.13.3.tar.xz
 https://ftpmirror.gnu.org/gnu/sed/sed-4.9.tar.xz
 https://ftpmirror.gnu.org/gnu/tar/tar-1.35.tar.xz
 https://www.kernel.org/pub/linux/utils/util-linux/v2.41/util-linux-2.41.tar.xz
+https://ftpmirror.gnu.org/gnu/which/which-2.23.tar.gz
 https://github.com/tukaani-project/xz/releases/download/v5.8.1/xz-5.8.1.tar.xz
+https://zlib.net/fossils/zlib-1.3.1.tar.gz
 https://github.com/facebook/zstd/releases/download/v1.5.7/zstd-1.5.7.tar.gz

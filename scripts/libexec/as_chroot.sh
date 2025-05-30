@@ -237,6 +237,27 @@ make install
 
 
 echo "CHECKPOINT: Minimal system complete" >&2
+# At this point, we enter into chapter 8 (ish) of LFS
+# Everything built from here isn't strictly necessary, but is good to have
+#
+# * Iana-etc        - Nice to have
+# * Glibc           - Rebuilt for completeness
+# * Zstd            - Needed by To
+# * Zlib            - Dependency of Binutils
+# * Flex            - Compilation convenience
+# * Groff           - Compilation convenience
+# * Pkgconf         - Compilation convenience
+# * Binutils        - Rebuilt for completeness
+# * GMP             - Dependency of GCC
+# * MPFR            - Dependency of GCC
+# * MPC             - Dependency of GCC
+# * ISL             - Dependency of GCC
+# * GCC             - Rebuilt for optimizations and completeness
+# * Which           - Compilation convenience
+# * Libtool         - Compilation convenience
+# * Autoconf        - Compilation convenience
+# * Automake        - Compilation convenience
+#
 sleep 2
 
 
@@ -263,6 +284,7 @@ echo "rootsbindir=/usr/sbin" > configparms
 make
 
 touch /etc/ld.so.conf
+# shellcheck disable=2016
 sed '/test-installation/s@$(PERL)@echo not running@' -i ../Makefile
 
 make install
@@ -290,6 +312,171 @@ rpc: files
 EOF
 
 
+# Zstd
+pre zstd
+
+# TODO: Figure out how to disable lzma support
+make prefix=/usr
+make prefix=/usr install
+rm -vf /usr/lib/libzstd.a
+
+
+# Zlib
+pre zlib
+./configure --prefix=/usr
+make
+make install
+rm -vf /usr/lib/libz.a
+
+
+# Flex
+pre flex
+./configure --prefix=/usr       \
+            --disable-static    \
+            --disable-nls       \
+            --disable-rpath
+make
+make install
+ln -sv flex   /usr/bin/lex
+
+
+# Groff
+pre groff
+PAGE=letter ./configure --prefix=/usr       \
+                        --disable-rpath     \
+                        --without-x         \
+                        --without-uchardet
+make
+make install
+
+
+# Pkgconf
+pre pkgconf
+./configure --prefix=/usr --disable-static
+make
+make install
+ln -sv pkgconf   /usr/bin/pkg-config
+
+
+# Binutils
+pre binutils
+
+mkdir -v build
+cd       build
+
+../configure --prefix=/usr       \
+             --sysconfdir=/etc   \
+             --enable-ld=default \
+             --enable-plugins    \
+             --enable-shared     \
+             --disable-werror    \
+             --enable-64-bit-bfd \
+             --enable-new-dtags  \
+             --with-system-zlib  \
+             --enable-default-hash-style=gnu
+make tooldir=/usr
+make tooldir=/usr install
+
+rm -rfv /usr/lib/lib{bfd,ctf,ctf-nobfd,gprofng,opcodes,sframe}.a \
+        /usr/share/doc/gprofng/
+
+
+# GMP
+pre gmp
+
+sed '/long long t1;/,+1s/()/(...)/' -i configure
+./configure --prefix=/usr    \
+            --enable-cxx     \
+            --disable-static
+make
+make install
+
+
+# MPFR
+pre mpfr
+./configure --prefix=/usr        \
+            --disable-static     \
+            --enable-thread-safe
+make
+make check # all 198 tests should pass
+make install
+
+
+# MPC
+pre mpc
+./configure --prefix=/usr    \
+            --disable-static
+make
+make install
+
+
+# ISL
+pre isl
+./configure --prefix=/usr    \
+            --disable-static
+make
+make install
+
+mkdir -pv /usr/share/gdb/auto-load/usr/lib
+mv -v /usr/lib/libisl*gdb.py /usr/share/gdb/auto-load/usr/lib
+
+
+# GCC
+pre gcc
+
+sed -e '/m64=/s/lib64/lib/' \
+    -i.orig gcc/config/i386/t-linux64
+
+mkdir -v build
+cd       build
+
+../configure --prefix=/usr            \
+             LD=ld                    \
+             --enable-languages=c,c++ \
+             --enable-default-pie     \
+             --enable-default-ssp     \
+             --enable-host-pie        \
+             --disable-nls            \
+             --disable-multilib       \
+             --disable-bootstrap      \
+             --disable-fixincludes    \
+             --with-system-zlib
+make
+make install
+
+# LTO compatibility symlink
+ln -sfv ../../libexec/gcc/"$(gcc -dumpmachine)"/15.1.0/liblto_plugin.so \
+        /usr/lib/bfd-plugins/
+
+# Sanity checks
+echo 'int main(){}' | cc -x c - -v -Wl,--verbose &> dummy.log
+readelf -l a.out | grep ': /lib'
+
+grep -E -o '/usr/lib.*/S?crt[1in].*succeeded' dummy.log
+grep -B4 '^ /usr/include' dummy.log
+grep 'SEARCH.*/usr/lib' dummy.log |sed 's|; |\n|g'
+grep "/lib.*/libc.so.6 " dummy.log
+grep found dummy.log
+
+# Move a misplaced file
+mkdir -pv /usr/share/gdb/auto-load/usr/lib
+mv -v /usr/lib/*gdb.py /usr/share/gdb/auto-load/usr/lib
+
+
+# Which
+pre which
+./configure --prefix=/usr --enable-optimize
+make
+make install
+
+
+# Libtool
+pre libtool
+./configure --prefix=/usr --disable-static
+make
+make install
+
+
 # Autoconf
 pre autoconf
 
@@ -304,15 +491,6 @@ pre automake
 ./configure --prefix=/usr
 make
 make install
-
-
-# Zstd
-pre zstd
-
-# TODO: Figure out how to disable lzma, lz4, zlib support
-make prefix=/usr
-make prefix=/usr install
-rm -vf /usr/lib/libzstd.a
 
 
 # Cleanup
