@@ -152,7 +152,11 @@ make
 make install
 
 
-# NOTE: Texinfo is skipped
+# Texinfo
+pre texinfo
+./configure --prefix=/usr
+make
+make install
 
 
 # Util-linux

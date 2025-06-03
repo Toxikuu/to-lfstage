@@ -35,6 +35,7 @@ The following packages are included:
     - Bison
     - Perl
     - Python
+    - Texinfo
     - Util-linux
     - Iana-etc
     - Glibc
