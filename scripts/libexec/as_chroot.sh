@@ -138,8 +138,6 @@ make install
 
 
 # Python
-# TODO: Decide if I want to build python build tools (packaging, setuptools,
-# wheel, meson) now or later
 pre Python
 
 ./configure --prefix=/usr           \
@@ -147,7 +145,8 @@ pre Python
             --disable-test-modules  \
             --without-dtrace        \
             --without-valgrind      \
-            --without-ensurepip
+            --without-ensurepip     \
+            --without-static-libpython
 make
 make install
 
