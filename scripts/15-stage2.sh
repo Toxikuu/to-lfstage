@@ -234,8 +234,7 @@ pre patch
 
 ./configure --prefix=/usr       \
             --host="$LFS_TGT"   \
-            --build="$BLD"      \
-            --disable-xattr
+            --build="$BLD"
 make
 make DESTDIR="$LFS" install
 
@@ -263,8 +262,7 @@ pre tar
             --build="$BLD"      \
             --disable-acl       \
             --disable-nls       \
-            --disable-rpath     \
-            --without-xattrs
+            --disable-rpath
 make
 make DESTDIR="$LFS" install
 

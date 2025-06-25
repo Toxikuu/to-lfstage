@@ -102,7 +102,6 @@ pre gettext
     --disable-rpath     \
     --disable-modula2   \
     --disable-acl       \
-    --disable-xattrs    \
     --disable-csharp    \
     --disable-go        \
     --without-emacs     \
@@ -473,7 +472,6 @@ pre gettext
             --disable-nls       \
             --disable-rpath     \
             --disable-acl       \
-            --disable-xattr     \
             --without-git       \
             --without-emacs     \
             --without-bzip2     \
