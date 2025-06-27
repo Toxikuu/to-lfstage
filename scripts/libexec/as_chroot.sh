@@ -618,10 +618,10 @@ rm -rf /usr/lib/python3.*/idlelib
 find /usr/{lib,libexec} -name '*.la' -exec rm -vf {} \;
 
 # remove stray readmes
-find / -type f -name 'README*' -exec rm -vf {} \;
+find /{usr,var,opt,etc} -type f -name 'README*' -exec rm -vf {} \;
 
 # remove batch scripts
-find / -type f -name '*.bat' -exec rm -vf {} \;
+find /{usr,var,opt,etc} -type f -name '*.bat' -exec rm -vf {} \;
 
 # remove uncommon character encodings
 # (utf8 is built into glibc)
