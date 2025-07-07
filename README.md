@@ -1,4 +1,4 @@
-# to-lfstage-profile
+# to-lfstage
 
 ## [LFStage](https://github.com/toxikuu/lfstage) profile for [to](https://github.com/toxikuu/to).
 
