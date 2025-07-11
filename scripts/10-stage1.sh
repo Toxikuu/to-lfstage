@@ -29,12 +29,12 @@ make install
 # GCC - Pass 1
 pre gcc
 
-tar -xf ../mpfr-4.2.2.tar.xz
-mv -v mpfr-4.2.2 mpfr
-tar -xf ../gmp-6.3.0.tar.xz
-mv -v gmp-6.3.0 gmp
-tar -xf ../mpc-1.3.1.tar.gz
-mv -v mpc-1.3.1 mpc
+tar -xf ../mpfr-[0-9]*.tar.xz
+mv -v mpfr-[0-9]* mpfr
+tar -xf ../gmp-[0-9]*.tar.xz
+mv -v gmp-[0-9]* gmp
+tar -xf ../mpc-[0-9]*.tar.gz
+mv -v mpc-[0-9]* mpc
 
 sed -e '/m64=/s/lib64/lib/' \
     -i.orig gcc/config/i386/t-linux64

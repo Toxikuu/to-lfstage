@@ -53,3 +53,5 @@ The following packages are included:
     - Libtool
     - Autoconf
     - Automake
+    - Libxcrypt
+    - Shadow

@@ -38,6 +38,8 @@ to
 EOF
 
 cat > /etc/resolv.conf << EOF
+nameserver 9.9.9.9
+nameserver 8.8.8.8
 nameserver 1.1.1.1
 EOF
 
@@ -81,7 +83,7 @@ nogroup:x:65534:
 tester:x:101:
 EOF
 
-install -o tester -d /home/tester
+install -o tester -vdm755 /home/tester
 
 
 # Create files wanted by some utilities
@@ -126,12 +128,12 @@ sh Configure -des                                         \
              -D prefix=/usr                               \
              -D vendorprefix=/usr                         \
              -D useshrplib                                \
-             -D privlib=/usr/lib/perl5/5.40/core_perl     \
-             -D archlib=/usr/lib/perl5/5.40/core_perl     \
-             -D sitelib=/usr/lib/perl5/5.40/site_perl     \
-             -D sitearch=/usr/lib/perl5/5.40/site_perl    \
-             -D vendorlib=/usr/lib/perl5/5.40/vendor_perl \
-             -D vendorarch=/usr/lib/perl5/5.40/vendor_perl
+             -D privlib=/usr/lib/perl5/5.42/core_perl     \
+             -D archlib=/usr/lib/perl5/5.42/core_perl     \
+             -D sitelib=/usr/lib/perl5/5.42/site_perl     \
+             -D sitearch=/usr/lib/perl5/5.42/site_perl    \
+             -D vendorlib=/usr/lib/perl5/5.42/vendor_perl \
+             -D vendorarch=/usr/lib/perl5/5.42/vendor_perl
 make
 make install
 
@@ -510,6 +512,51 @@ pre automake
 ./configure --prefix=/usr
 make
 make install
+
+
+# Libxcrypt
+pre libxcrypt
+
+./configure --prefix=/usr                   \
+            --enable-hashes=strong,glibc    \
+            --enable-obsolete-api=no        \
+            --disable-static                \
+            --disable-failure-tokens        \
+            --disable-nls                   \
+            --disable-rpath
+make
+make install
+
+
+# Shadow
+pre shadow
+
+# Coreutils's `groups` is preferred
+sed -i 's/groups$(EXEEXT) //' src/Makefile.in
+
+sed -e 's:#ENCRYPT_METHOD DES:ENCRYPT_METHOD YESCRYPT:' \
+    -e 's:/var/spool/mail:/var/mail:'                   \
+    -e '/PATH=/{s@/sbin:@@;s@/bin:@@}'                  \
+    -i etc/login.defs
+
+touch /usr/bin/passwd
+./configure --sysconfdir=/etc   \
+            --disable-static    \
+            --disable-rpath     \
+            --disable-nls       \
+            --with-{b,yes}crypt \
+            --without-libbsd    \
+            --without-nscd      \
+            --with-group-name-max-length=32
+make
+make exec_prefix=/usr install
+
+pwconv
+grpconv
+
+mkdir -pv /etc/default
+useradd -D --gid 999
+sed -i '/MAIL/s/yes/no/' /etc/default/useradd
 
 
 # Cleanup

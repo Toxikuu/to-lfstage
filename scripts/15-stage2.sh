@@ -27,7 +27,7 @@ make DESTDIR="$LFS" install
 
 
 # Ncurses
-# NOTE: A specific ncurses snapshot is used (ncurses-6.5-20250531) to avoid
+# NOTE: A specific ncurses snapshot is used (ncurses-6.5-20250705) to avoid
 # gcc >= 15 errors. 20250517 is the minimum.
 pre ncurses
 
@@ -61,27 +61,6 @@ sed -e 's/^#if.*XOPEN.*$/#if 1/' \
 
 # Bash
 pre bash
-
-# NOTE: The rc1 version is used because it plays nicer with GCC >= 15
-# Fix a build issue occuring when the host has GCC >= 15
-patch -Np1 <<EOF
---- bash-5.3-rc1/bashansi.h     2024-03-26 00:17:49.000000000 +0800
-+++ bash-5.3-rc1.patched/bashansi.h     2025-05-21 15:04:17.090096535 +0800
-@@ -35,8 +35,11 @@
- #  include "ansi_stdlib.h"
- #endif /* !HAVE_STDLIB_H */
- 
--/* If bool is not a compiler builtin, prefer stdbool.h if we have it */
--#if !defined (HAVE_C_BOOL)
-+/* If bool is not a compiler builtin, prefer stdbool.h if we have it
-+
-+   Explicitly check __STDC_VERSION__ here in addition to HAVE_C_BOOL:
-+   in cross-compilation build tools does not include config.h.  */
-+#if !defined (HAVE_C_BOOL) && (!defined(__STDC_VERSION__) || __STDC_VERSION__ < 202311L)
- #  if defined (HAVE_STDBOOL_H)
- #    include <stdbool.h>
- #  else
-EOF
 
 ./configure --prefix=/usr           \
             --build="$BLD"          \
@@ -320,12 +299,12 @@ rm -v "$LFS"/usr/lib/lib{bfd,ctf,ctf-nobfd,opcodes,sframe}.{a,la}
 # immediately after.
 pre gcc
 
-tar -xf ../mpfr-4.2.2.tar.xz
-mv -v mpfr-4.2.2 mpfr
-tar -xf ../gmp-6.3.0.tar.xz
-mv -v gmp-6.3.0 gmp
-tar -xf ../mpc-1.3.1.tar.gz
-mv -v mpc-1.3.1 mpc
+tar -xf ../mpfr-[0-9]*.tar.xz
+mv -v mpfr-[0-9]* mpfr
+tar -xf ../gmp-[0-9]*.tar.xz
+mv -v gmp-[0-9]* gmp
+tar -xf ../mpc-[0-9]*.tar.gz
+mv -v mpc-[0-9]* mpc
 
 sed -e '/m64=/s/lib64/lib/' \
     -i.orig gcc/config/i386/t-linux64
