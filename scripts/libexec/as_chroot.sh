@@ -273,8 +273,6 @@ cp services protocols /etc
 # Glibc
 pre glibc
 
-patch -Np1 -i ../glibc-2.41-fhs-1.patch
-
 mkdir -v build
 cd       build
 
