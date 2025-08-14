@@ -447,7 +447,7 @@ make
 make install
 
 # LTO compatibility symlink
-ln -sfv ../../libexec/gcc/"$(gcc -dumpmachine)"/15.1.0/liblto_plugin.so \
+ln -sfv ../../libexec/gcc/"$(gcc -dumpmachine)"/15.2.0/liblto_plugin.so \
         /usr/lib/bfd-plugins/
 
 # Sanity checks
