@@ -45,7 +45,7 @@ cd       build
 ../configure                  \
     --target="$LFS_TGT"       \
     --prefix="$LFS/tools"     \
-    --with-glibc-version=2.41 \
+    --with-glibc-version=2.42 \
     --with-sysroot="$LFS"     \
     --with-newlib             \
     --without-headers         \
